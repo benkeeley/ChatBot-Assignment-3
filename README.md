@@ -104,7 +104,7 @@ The main purpose of this method is to split the message string into an array of 
 
 ***Figure 9:*** WolframAlpha class and constructor:
 
-The purpose of this class is to assist the bot with querying and obtaining results from WolframAlpha API. The Class imports the WolframAlphaJavaLibary, WolframAlpha-1.1.jar must be in the classpath. The various String instance variables are named after the corresponding titles obtained from a WolframAlpha query, and hold the corresponding results for these titles. All String instance variables are intialized to null on object creation. The constructor method of this class also intializes WolframAlphaJavaLibary objects to assist in querying and obtaining results from WolframAlpha. The WolframAlpha object is now an intialized variable of Window and the query() method is called for each parsed message received from the user.    
+The purpose of this class is to assist the bot with querying and obtaining results from WolframAlpha API. The Class imports the WolframAlphaJavaLibary. WolframAlpha-1.1.jar must be in the classpath. The various String instance variables are named after possible titles obtained from a WolframAlpha query and hold the corresponding results for these titles. All String instance variables are intialized to null on object creation and should all be set to null before each query. The constructor method of this class also intializes WolframAlphaJavaLibary objects to assist in querying and obtaining results from WolframAlpha. The WolframAlpha object is now an intialized variable of Window and the query() method is called for each parsed message received from the user.    
 
 ![QueryMethod_WolframAlpha](https://user-images.githubusercontent.com/77421122/114611602-11854800-9c56-11eb-8311-720697e66eb8.PNG)
 
@@ -160,13 +160,13 @@ We implemented Named Entity Recognition so our chat bot would recognize if we ar
 ![namedEntities](https://user-images.githubusercontent.com/75397522/111888896-03694200-899e-11eb-9e77-4725305d9f89.PNG)
 
 
-***Figure 9:*** Named Entities Example:
+***Figure 17:*** Named Entities Example:
 
 If you introduce yourself with your name and your name is a recognized entity. Elon will say you have a nice name. Grimes response is now triggered if the entity grimes is detected along with others ie Tesla. On the right recognized entities are listed
 
 ![places](https://user-images.githubusercontent.com/75397522/111888928-37dcfe00-899e-11eb-9ecc-5623d7bed507.PNG)
 
-***Figure 10:*** Places Visited Example:
+***Figure 18:*** Places Visited Example:
 
 You can ask elon where he has been, listing places. Elon will randomly select a recognized entity and then give a general response about it.
 
@@ -179,11 +179,11 @@ We implemented Coreference resolutiong so we are able to say a name like "Jeff B
 
 ![image](https://user-images.githubusercontent.com/75397522/112570314-0baced00-8da3-11eb-85fa-f0891707a98e.png)
 
-***Figure 11:*** Sample Chat Output with multiple questions
+***Figure 19:*** Sample Chat Output with multiple questions
 
 ![image](https://user-images.githubusercontent.com/75397522/112570386-2f703300-8da3-11eb-9ae5-d0540cd914eb.png)
 
-***Figure 12:*** Sample Chat Output with a Name Then Referencing by He/She/Him/Her
+***Figure 20:*** Sample Chat Output with a Name Then Referencing by He/She/Him/Her
 
 ---------------------------------------
 
@@ -193,7 +193,7 @@ We used Sentiment analysis to see how the user was feeling. Depending on if the 
 
 ![310](https://user-images.githubusercontent.com/75397522/112517084-26f10b80-8d55-11eb-9bae-15dbd5d3ce4d.PNG)
 
-***Figrue 13:*** Sample conversation 
+***Figrue 21:*** Sample conversation 
 
 From this sample conversation you can see that Elon detected that the sentence was positive and he gave a response referencing that, then he sent the appropriate response. Below that you can see that the console shows that the sentence was positive, what it sent a variable to, and the sentence it was testing.
 
@@ -205,23 +205,84 @@ To engage a socket conversation you must type in SocketSTUFF (case sensitive) to
 
 ![image](https://user-images.githubusercontent.com/75397522/112515502-8cdc9380-8d53-11eb-9f3e-9c495dd69b8e.png)
 
-***Figure 14:*** Sample of Receiving a Connection
+***Figure 22:*** Sample of Receiving a Connection
 
 ![image](https://user-images.githubusercontent.com/75397522/112515676-b5fd2400-8d53-11eb-842c-a849f48aafe2.png)
 
-***Figure 15:*** Sample output of a socket conversation
+***Figure 23:*** Sample output of a socket conversation
 
 Client can converse with Elon normally, typing input in the console and receiving Elonbots output. Press q to close communications
 
 ![image](https://user-images.githubusercontent.com/75397522/112515840-e1800e80-8d53-11eb-8a5b-1085ac26f9e3.png)
 
-***Figure 16:*** Client Side Socket Code
+***Figure 24:*** Client Side Socket Code
 
 ![image](https://user-images.githubusercontent.com/75397522/112515860-e80e8600-8d53-11eb-98b9-01b70a5f2d8f.png)
 
-***Figure 17:*** Server Side Socket Code
+***Figure 25:*** Server Side Socket Code
 
 ---------------------------------------
-# API Use 
+# API Features
 ---------------------------------------
+
+## WolframAlpha (*WolframAlphaJavaLibary*)
+------------------------------------------
+
+![WolframMath](https://user-images.githubusercontent.com/77421122/114618747-93796f00-9c5e-11eb-87d7-f3c8dd7d1b89.PNG)
+
+***Figure 26:*** Using Wolfram Alpha to solve math problems
+
+When confronted with a math problem the bot will find an answer using Wolfram Alpha and display it beside the problem in question. The bot is now capable of solving math questions using results obtained from Wolfram Alpha API.
+
+![wolframWikipedia_wolframResult](https://user-images.githubusercontent.com/77421122/114619539-890ba500-9c5f-11eb-8c39-dc40803f6c48.PNG)
+
+***Figure 26:*** Using Wolfram Alpha to answer questions and talk about recognized topics 
+
+The bot can now answer questions it is not hard coded for using Wolfram API. If the question does not trigger any of the previously programmed responses and WolframAlpha API returns a result, the bot will answer accordingly. This can be seen by the bots answer to the question "how old is the earth?". If Wolfram Alpha does not have a direct result to the question, the bot will reference the Wikepedia article on the topic it thinks you are talking about. ![woflram_result_cont](https://user-
+
+images.githubusercontent.com/77421122/114620449-75ad0980-9c60-11eb-9791-88ff2ea6798d.PNG)
+
+***Figure 27:*** cont... 
+
+Asking about recognized entities or topics will also yield a response where the bot looks up the Wikepedia article using the Wikepedia summary obtained from WolframAlpha API.
+The topic is determined by using WolframAlpha's interpreted response. 
+
+## Twitter API (*twitter4J*)
+------------------------------------------
+
+![Random_tweets](https://user-images.githubusercontent.com/77421122/114623960-cde60a80-9c64-11eb-9c3d-d4c7a0ab4085.PNG)
+
+***Figure 28:*** Bot references Elons twitter posts
+
+You can ask the bot about Elon Musks twitter and it will respond with a random twitter post from @elonmusk's timeline. Images are outputted as links which can be followed to view the twitter post mentioned, this is seen by the second last response. Using the bots previous features, ElonBot will also randomnly output a message based off the topic of twitter after each response. This includes responses such as: "I am a twitter God", "Tweet, tweet", and "I love twitter".
+
+![lastTwitterPost](https://user-images.githubusercontent.com/77421122/114624584-cc691200-9c65-11eb-99c1-b02224f368b2.PNG)
+
+***Figure 29:*** Elon's last twitter post
+
+You can ask ElonBot about Elon Musk's last or most recent twitter post and it will reference it.
+
+![twitterLikes](https://user-images.githubusercontent.com/77421122/114624796-17832500-9c66-11eb-9269-d722b88662fe.PNG)
+
+***Figure 30:*** Elon's liked twitter posts
+
+You can mention Elon Musk's favourite posts or the twitter posts he likes or has liked, and the bot will return a random twitter post that @elonmusk has liked along with the user that posted it. 
+
+![LastFavourite](https://user-images.githubusercontent.com/77421122/114625172-b3149580-9c66-11eb-8ded-6da196e99d58.PNG)
+
+***Figure 31:*** Elon's most recent liked twitter posts
+
+You can ask about Elon Musks most recent twitter favourite in multiple ways and the bot will mention it. 
+
+![cyberPunk](https://user-images.githubusercontent.com/77421122/114625369-01299900-9c67-11eb-8911-f3d7f44e9cac.PNG)
+
+***Figure 32:*** Referencing a specific tweet
+
+When mentioning CyberPunk the bot will reference a specific tweet that Elon made about it. 
+
+
+
+
+
+
 
