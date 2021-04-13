@@ -240,7 +240,7 @@ When confronted with a math problem the bot will find an answer using Wolfram Al
 
 The bot can now answer questions it is not hard coded for using Wolfram API. If the question does not trigger any of the previously programmed responses and WolframAlpha API returns a result, the bot will answer accordingly. This can be seen by the bots answer to the question "how old is the earth?". If Wolfram Alpha does not have a direct result to the question, the bot will reference the Wikepedia article on the topic it thinks you are talking about. 
 
-![woflram_result_cont](https://user-images.githubusercontent.com/77421122/114620449-75ad0980-9c60-11eb-9791-88ff2ea6798d.PNG)
+![attila](https://user-images.githubusercontent.com/77421122/114626411-86fa1400-9c68-11eb-8382-5942173aa62d.PNG)
 
 ***Figure 27:*** cont... 
 
