@@ -1,4 +1,12 @@
 # Elon Musk Chat Bot
+
+##Updates for Ben Keeley's Individual Assignment 
+Since Assignment 3 I have added features that make use of Wolfram API and Twitter API to improve the chatbot.
+- Implemented a WolframAlpha class to Query Wolfram Alpha for all received inputs
+- Implemented a Twitter API class to retrieve information from Elon Musks twitter page.
+- Added responses where Elon bot directly references Elon's twitter
+- Added responses where Elon can answer questions based on Wolfram Alpha's obtained results
+- Some extra topics dealing with twitter were added
 ## Updates for Assignment 3
 Since Assignment 2 we have added new features and also enhanced some quality of life features to our chatbot. 
 Additions include:
@@ -90,6 +98,10 @@ The purpose of this method is to take a string and add it to the main conversati
 ***Figure 8:*** response method:
 
 The main purpose of this method is to split the message string into an array of its individual words. It will then check the words contained in this array to grab the correct bot response from the response 2d array shown above. Then we check if the question boolean value was true and we generate a random number to check if it equals a specified number and if both cases are true our bot will tell the user that their question was a good question. If the user sent ‘q’ we sent a message saying that the chat has ended.
+
+## Code Documentation (Individual Project)
+
+
 
 ---------------------------------------
 # Implementations
