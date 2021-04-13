@@ -110,7 +110,7 @@ The purpose of this class is to assist the bot with querying and obtaining resul
 
 ***Figure 10:*** WolframAlpha query method :
 
-This method queries a String input to WolframAlpha and saves the results in the titled variables. The String variable topic is set to the first interpreted response obtained from a WolframAlpha query if there is one. 
+This method queries a String input to WolframAlpha and saves the results in the objects titled variables. The variable topic is set to the first interpreted response obtained from a WolframAlpha query if there is one. 
 
 ![getter_setter_wolfram](https://user-images.githubusercontent.com/77421122/114612394-eea76380-9c56-11eb-9f4e-7ff5db4f08e7.PNG)
 
