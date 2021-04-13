@@ -163,3 +163,8 @@ Client can converse with Elon normally, typing input in the console and receivin
 ![image](https://user-images.githubusercontent.com/75397522/112515860-e80e8600-8d53-11eb-98b9-01b70a5f2d8f.png)
 
 ***Figure 17:*** Server Side Socket Code
+
+---------------------------------------
+# API Use 
+---------------------------------------
+
