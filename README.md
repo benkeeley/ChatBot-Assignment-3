@@ -1,11 +1,11 @@
 # Elon Musk Chat Bot
 
-##Updates for Ben Keeley's Individual Assignment 
+## Updates for Ben Keeley's Individual Assignment 
 Since Assignment 3 I have added features that make use of Wolfram API and Twitter API to improve the chatbot.
-- Implemented a WolframAlpha class to Query Wolfram Alpha for all received inputs
+- Implemented a Wolfram Alpha class that queries Wolfram Alpha for inputs.
 - Implemented a Twitter API class to retrieve information from Elon Musks twitter page.
-- Added responses where Elon bot directly references Elon's twitter
-- Added responses where Elon can answer questions based on Wolfram Alpha's obtained results
+- Added responses where the bot directly references Elon's twitter.
+- Added responses where the bot answers questions based on Wolfram Alpha's obtained results
 - Some extra topics dealing with twitter were added
 ## Updates for Assignment 3
 Since Assignment 2 we have added new features and also enhanced some quality of life features to our chatbot. 
@@ -100,8 +100,53 @@ The purpose of this method is to take a string and add it to the main conversati
 The main purpose of this method is to split the message string into an array of its individual words. It will then check the words contained in this array to grab the correct bot response from the response 2d array shown above. Then we check if the question boolean value was true and we generate a random number to check if it equals a specified number and if both cases are true our bot will tell the user that their question was a good question. If the user sent ‘q’ we sent a message saying that the chat has ended.
 
 ## Code Documentation (Individual Project)
+![Wolfram_constructor_variables](https://user-images.githubusercontent.com/77421122/114610074-5e681f00-9c54-11eb-8d1e-b8483d32a956.PNG)
 
+***Figure 9:*** WolframAlpha class and constructor:
 
+The purpose of this class is to assist the bot with querying and obtaining results from WolframAlpha API. The Class imports the WolframAlphaJavaLibary, WolframAlpha-1.1.jar must be in the classpath. The various String instance variables are named after the corresponding titles obtained from a WolframAlpha query, and hold the corresponding results for these titles. All String instance variables are intialized to null on object creation. The constructor method of this class also intializes WolframAlphaJavaLibary objects to assist in querying and obtaining results from WolframAlpha. The WolframAlpha object is now an intialized variable of Window and the query() method is called for each parsed message received from the user.    
+
+![QueryMethod_WolframAlpha](https://user-images.githubusercontent.com/77421122/114611602-11854800-9c56-11eb-8311-720697e66eb8.PNG)
+
+***Figure 10:*** WolframAlpha query method :
+
+This method queries a String input to WolframAlpha and saves the results in the titled variables. The String variable topic is set to the first interpreted response obtained from a WolframAlpha query if there is one. 
+
+![getter_setter_wolfram](https://user-images.githubusercontent.com/77421122/114612394-eea76380-9c56-11eb-9f4e-7ff5db4f08e7.PNG)
+
+***Figure 11:*** WolframAlpha getter and setter methods :
+
+All variables intended for use in the Window class have getter and setter methods. 
+
+![TWITTERAPIConstructor](https://user-images.githubusercontent.com/77421122/114613631-7477de80-9c58-11eb-93af-e6ec7f0504df.PNG)
+
+***Figure 12:*** TwitterAPI class and constructor :
+
+The following class uses the twitter4J libary to use Twitter API. The ResponseList<Status> instance variables hold the most recent 20 timeline tweets and favourites from the requested twitter account, which in Window's case is @elonmusk. In the constructor a twitter4J Twitter object is created to read from Twitter and the constructor throws an exception if twitter is down or the lists cannot be created. 
+
+![getRecentTweet](https://user-images.githubusercontent.com/77421122/114615447-91151600-9c5a-11eb-92d0-b702baa21beb.PNG)
+
+***Figure 13:*** getRecentTweet method :
+
+Returns a String of the most recent tweet from the obtained timeline list. 
+
+![getRandomTweet](https://user-images.githubusercontent.com/77421122/114615677-d0dbfd80-9c5a-11eb-8eab-2f4f4fe60c04.PNG)
+
+***Figure 14:*** getRecentTweet method :
+
+Returns a String of a random tweet from the obtained twitter users timeline.
+
+![getRandomFavourite](https://user-images.githubusercontent.com/77421122/114615925-1b5d7a00-9c5b-11eb-93dd-b484dc3c64b6.PNG)
+
+***Figure 15:*** getRandomFavourite method :
+
+Returns a random tweet that the user liked and the twitter user that posted the tweet.
+
+![getRecentFavourite_getSpecificTweet](https://user-images.githubusercontent.com/77421122/114616175-69727d80-9c5b-11eb-8dcd-483ff3545edf.PNG)
+
+***Figure 16:*** getRecentFavourite method and getSpecificTweet method :
+
+getRecentFavourite() returns a String of the most recent liked post of the objects specified twitter user. getSpecificTweet(long a) returns a String of a twitter object based on a specific twitter ID provided. 
 
 ---------------------------------------
 # Implementations
