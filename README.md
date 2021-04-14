@@ -6,7 +6,7 @@ Since Assignment 3 I have added features that make use of Wolfram API and Twitte
 - Implemented a Twitter API class to retrieve information from Elon Musks twitter page.
 - Added responses where the bot directly references Elon's twitter.
 - Added responses where the bot answers questions based on Wolfram Alpha's obtained results
-- Some extra topics dealing with twitter were added
+- Some extra topics dealing with twitter and Wolfram responses were added
 ## Updates for Assignment 3
 Since Assignment 2 we have added new features and also enhanced some quality of life features to our chatbot. 
 Additions include:
