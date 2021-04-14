@@ -33,6 +33,7 @@ import edu.stanford.nlp.ie.util.*;
 import edu.stanford.nlp.pipeline.*;
 import edu.stanford.nlp.semgraph.*;
 import edu.stanford.nlp.trees.*;
+import twitter4j.TwitterException;
 
 public class Window extends JFrame implements KeyListener{
 	//Here we make a window that will contain our text area box and the input box at the bottom as well as a scroll bar the shows up when needed
@@ -42,12 +43,14 @@ public class Window extends JFrame implements KeyListener{
 	JScrollPane sideBar= new JScrollPane(talkArea, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 	//This is to load the image of the bot into an icon form
 	ImageIcon icon = new ImageIcon("img/bot.png");
-
+	WolframAlpha wolfram = new WolframAlpha();
+	TwitterAPI t;
 	//Variable to keep track how positive vs. negative the conversation is
 	int Sentiment=0;
 
 	Pipeline pipeline;
 	List<Object[]> temp = CoRef("");
+
 
 
 
@@ -116,11 +119,18 @@ public class Window extends JFrame implements KeyListener{
 				"In 2004, Jeff and I had a meeting that did not go well. We disagreed about our reusable rocket ideas that \n\twe were developing for our spaceflight companies.",
 				"In 2013, we had a disagreement about my company, SpaceX, having exclusive use of a NASA launchpad that \n\tJeff thought should be open to all launch companies, including his company, Blue Origin. It was a phony \n\tblocking tactic. Blue origin had not created a reliable suborbital spacecraft that needed launching at that \n\tpoint.",
 				"In 2014, our companies got into a patent battle in 2014 over Blue Origin being granted a patent for drone \n\tships used for landing rocket boosters, which my company and I contested with the support of a judge, so \n\tBlue Origin withdrew most of their claims.",
-			"I disagree with their hiring practices, and as I have said before, their rate of progress is too slow and the \n\tamount of years Jeff Bezos has left is not enough, but I'm still glad he's doing what he's doing with \n\tBlue Origin"}
+			"I disagree with their hiring practices, and as I have said before, their rate of progress is too slow and the \n\tamount of years Jeff Bezos has left is not enough, but I'm still glad he's doing what he's doing with \n\tBlue Origin"} ,
+			
+			//Wolfram for math questions
+			{"Too easy!", "Give me a harder one next time!", "What am I, a calculator?", "Math is fun.", "Even an idiot knows that.", "I'm CEO of SpaceX, it be embarassing if I didn't know that.", "I'm too smart", "You're a simpleton if you don't even know that. "},
+			
+			//General Wolfram results
+			{"Isn't that interesting?", "What a great thing to know!", "The world is so fascinating. That's why I'm so optimistic about the future!", "With AI we could learn even more!", "Knowledge is everything, keep learning and asking questions.", "I wonder how we know this?", "Never stop learning!", "Success comes from hardwork and learning new things.", "That's so cool!", "Crazy right?"},
+			{"I love twitter!", "I use twitter a lot, don't I?", "I am a twitter God.", "Tweet, tweet.", "Tweet me sometime."}
 	};
 
 	//Constructor to create the window
-	public Window() {
+	public Window() throws TwitterException {
 		//set the title
 		super("Elon Bot");
 		//set the size of the window and set it so it can't be resized
@@ -138,8 +148,7 @@ public class Window extends JFrame implements KeyListener{
 
 		//Add a GIF as a jLabel based on URL.
 		try {
-			//GIF: Harrington, D. (2020). Pixel-Robot[GIF]. Retrieved from https://opengameart.org/content/pixel-robot.
-			URL url = new URL("https://opengameart.org/sites/default/files/robot-idle.gif");
+			URL url = new URL("https://discordemoji.com/assets/emoji/4803_BMO_dancing.gif");
 			JLabel gif = new JLabel(new ImageIcon(new ImageIcon(url).getImage().getScaledInstance(78, 78, Image.SCALE_DEFAULT)));
 			pane.add(gif);
 		}
@@ -162,6 +171,8 @@ public class Window extends JFrame implements KeyListener{
 		setVisible(true);
 		//Calling the addText method to add text to the text ares
 		addText("\t\t\tPlease type Q to end the conversation\n" );
+		
+		t = new TwitterAPI("@elonmusk");
 
 
 
@@ -229,7 +240,7 @@ public class Window extends JFrame implements KeyListener{
 
 
 	//The method that will get the bots response
-	public String response(String s, Boolean question) {
+	public String response(String s, Boolean question)  {
 		int Sentiment= analyse(s);
 		int r,c;
 		String initMsg = assist(s);
@@ -251,6 +262,10 @@ public class Window extends JFrame implements KeyListener{
 		for (int i=0; i < sentences.size(); i++) {
 			//Make msg lower case so that s is intact and case doesn't matter for sent
 			String msg = sentences.get(i);
+			
+			//Query Wolfram Alpha
+			wolfram.query(msg);
+			
 			//A string list of all the named entities detected by corenlp
 			List<String> namedEntities = getNameEntityList(msg);
 			msg = msg.toLowerCase();
@@ -532,6 +547,7 @@ public class Window extends JFrame implements KeyListener{
 
 
 			}
+			
 			//----------------------------------------Easter Egg--------------------------------------------------------//
 			else if(s.toLowerCase().equals("the earth king has invited you to lake laogai.")) {
 				addText("I am honored to accept his invitation.\n");
@@ -546,19 +562,154 @@ public class Window extends JFrame implements KeyListener{
 				r = 1;
 				c = 0;
 			}
-//----------------------------------------Easter Egg--------------------------------------------------------//
-		else if(s.toLowerCase().equals("the earth king has invited you to lake laogai.")) {
-			addText("I am honored to accept his invitation.\n");
-			addText("\n-->Elon:\t");
-			r = 2;
-			c=  0;
+			//-----------------------------------TwitterAPI--------------------------------------------------------//
+
+			else if((sent.contains("recent")||sent.contains("last"))&&(sent.contains("tweet")||sent.contains("twitter"))&&(sent.contains("favourited")||sent.contains("favourite")||sent.contains("liked")||sent.contains("like"))) {
+				
+				
+				String s2 = "I last liked the twitter post: " + t.getMostRecentFavourite();
+				s2 = s2.replace("\n", " ");
+				addText(formatForTextArea(s2) + "\n");
+				addText("\n-->Elon:\t");
+				
+				r = 15;
+				c = (int)(Math.random()*(Responses[r].length-1));
+				
+			}
+			else if((sent.contains("twitter")||sent.contains("tweets")||sent.contains("tweet"))&&(sent.contains("favourite")||sent.contains("liked")||sent.contains("like"))) {
+				
+		         String favtweet = t.getRandomFavourite();
+				
+				if(favtweet!=null) {
+					String s2 = "I liked the tweet: " + favtweet;
+					s2 = s2.replace("\n", " ");
+					addText(formatForTextArea(s2) + "\n");
+					addText("\n-->Elon:\t");
+					addText("I love tweets like that.\n");
+					addText("\n-->Elon:\t");
+				}
+					
+				
+				r = 15;
+				c = (int)(Math.random()*(Responses[r].length-1));
+				
+				
+				
+			}
 			
-		}
-//------------------------------------------------------Random-----------------------------------------------//
-		else if(sent.contains("thanks")||(sent.contains("thank")&&sent.contains("you"))) {
-			r = 1;
-			c = 0;
-		}
+			else if(sent.contains("recent")&&(sent.contains("tweet")||(sent.contains("twitter")&&sent.contains("post")))) {
+				
+				String mostRecentTweet = t.getMostRecentTweet();
+				
+				if(mostRecentTweet!=null) {
+				String s2 = "I last tweeted: " + mostRecentTweet;
+				s2 = s2.replace("\n", " ");
+				addText(formatForTextArea(s2)+ "\n");
+				addText("\n-->Elon:\t");
+				
+				r = 15;
+				c = (int)(Math.random()*(Responses[r].length-1));
+				
+				}else {
+					r=2;
+					c=(int)(Math.random()*7);
+				}
+			}
+			
+			
+			else if (sent.contains("twitter")||sent.contains("tweet")||sent.contains("tweets")) {
+				
+				String tweet = t.getRandomTweet();
+				
+				if(tweet!=null) {
+					String s2 = "I tweeted: " + tweet;
+					s2 = s2.replace("\n", " ");
+					addText(formatForTextArea(s2) + "\n");
+					addText("\n-->Elon:\t");
+				}
+					
+				
+				r = 15;
+				c = (int)(Math.random()*(Responses[r].length-1));
+				
+				
+			}
+			//mentions a specific tweet where elon talked about cyberpunk
+			else if(sent.contains("cyberpunk")) {
+				String s2 = "I tweeted about this! I said \"" + t.getSpecificTweet(1381221447322935303L) + "\"";
+				s2 = s2.replace("\n", " ");
+				addText(formatForTextArea(s2) + "\n");
+				addText("\n-->Elon:\t");
+				
+				r = 15;
+				c = (int)(Math.random()*(Responses[r].length-1));
+			}
+			
+			// -------------------------------------WolframAlphaAPI-----------------------------------------------------//
+			
+			// Math question, output the math problem (input) and its solution (result)
+			else if(wolfram.getResult()!=null&&wolfram.getInput()!=null) {
+				
+				addText(wolfram.getInput() + " is " + wolfram.getResult() + ".\n");
+				r = 13;
+				c = (int)(Math.random()*(Responses[r].length-1));
+				
+				wolfram.setResult(null);
+				wolfram.setInput(null);
+				
+				question = false;
+				
+				addText("\n-->Elon:\t");
+			}
+			
+			// When Wolfram returns a result not math related 
+			else if(wolfram.getResult()!= null&&!wolfram.getResult().equals("(data not available)")) {
+				addText(wolfram.getResult() + ", I think.\n");
+				r = 14;
+				c = (int)(Math.random()*(Responses[r].length-1));
+				
+				wolfram.setResult(null);
+				wolfram.setInput(null);
+				
+				
+				addText("\n-->Elon:\t");
+			}
+			else if(wolfram.getWikipediaSummary()!= null && wolfram.getTopic()!=null) {
+				String s2 =  "When I search the topic " + wolfram.getTopic() + ", Wikipedia says: \"" + wolfram.getWikipediaSummary();
+				
+				addText(formatForTextArea(s2)+ "\n");
+				
+				r = 14;
+				c = (int)(Math.random()*(Responses[r].length-1));
+				
+				wolfram.setResult(null);
+				wolfram.setInput(null);
+				wolfram.setWikipediaSummary(null);
+				wolfram.setTopic(null);
+				
+				addText("\n-->Elon:\t");
+			}
+			
+			else if(wolfram.getWikipediaSummary()!=null) {
+				
+				
+				String s2 = "When I search Wikipedia I get, \" " + wolfram.getWikipediaSummary();
+
+				addText(formatForTextArea(s2)+ "\n");
+				
+				r = 14;
+				c = (int)(Math.random()*(Responses[r].length-1));
+				
+				wolfram.setResult(null);
+				wolfram.setInput(null);
+				wolfram.setWikipediaSummary(null);
+				
+				question = false;
+				
+				addText("\n-->Elon:\t");
+				
+			}
+			
 		//if its q end the chat and disable the input field
 		else if(sent.contains("q")) {
 			r=3;
@@ -571,6 +722,7 @@ public class Window extends JFrame implements KeyListener{
 			c=(int)(Math.random()*7);
 		}
 		
+			
 	    // If the msg received was a question and the response is not default. There is a 1/5 chance bot responds this.
 		if(question&&r!=2&&((int)Math.round(Math.random()*4))==4) {
 			addText("That's a great question!\n");
@@ -583,6 +735,7 @@ public class Window extends JFrame implements KeyListener{
 		
 		
 		response = Responses[r][c];
+		
 		//add the response to the text Area
 		addText(response + "\n");
 		
@@ -592,11 +745,7 @@ public class Window extends JFrame implements KeyListener{
 	return response;
 	
 }
-		
-
-		
-		 
-	    
+	
 	    public int analyse(String txt) {
 	    	//document for corenlp
 	    	CoreDocument core= new CoreDocument(txt);
@@ -651,8 +800,6 @@ public class Window extends JFrame implements KeyListener{
 			
 	    }
 	    
-		
-
 
 	//Get a list of namedEntitys from the string and then convert those named entities to strings in a new list
 	public List<String> getNameEntityList(String s){
@@ -729,6 +876,25 @@ public class Window extends JFrame implements KeyListener{
 		}
 		
 		return s;
+	}
+	
+	public static String formatForTextArea(String s) {
+		
+		boolean newLine = false;
+		
+		for(int j = 1; j < s.length(); j++){
+			if(j%100==0) {
+				newLine = true;
+			}
+			if(newLine&&s.charAt(j)==(char)32) {
+				s = s.substring(0, j) + "\n\t" + s.substring(j+1);
+				newLine = false;
+			}
+		
+		}
+		
+		return s;
+		
 	}
 }
 
